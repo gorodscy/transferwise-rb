@@ -86,6 +86,19 @@ describe Transferwise::Request do
         end
       end
 
+      context 'response body is empty' do
+        it 'does not raise' do
+          stub_authed_request(:get, '/v1/widgets', access_token).
+            to_return(body: '')
+
+          expect do
+            Transferwise::Request.request :get, '/v1/widgets', {}, { access_token: access_token }
+          end.to_not(
+            raise_error
+          )
+        end
+      end
+
       context 'response is a 400 bad request' do
         it 'raises InvalidRequestError' do
           stub_authed_request(:get, '/v1/widgets', access_token).

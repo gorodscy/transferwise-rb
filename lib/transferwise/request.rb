@@ -48,6 +48,8 @@ module Transferwise
     private_class_method :execute_request
 
     def self.parse(response)
+      return {} if response.body.length.zero?
+
       begin
         response = JSON.parse(response.body)
       rescue JSON::ParserError
